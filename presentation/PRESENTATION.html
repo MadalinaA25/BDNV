@@ -1,0 +1,717 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL vs MongoDB - Prezentare BDNV</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+        }
+        
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active { display: flex; }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(79, 172, 254, 0.05) 100%);
+            z-index: 0;
+        }
+        
+        .slide-content { position: relative; z-index: 1; flex: 1; }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+        }
+        
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 30px;
+        }
+        
+        .column {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+        }
+        
+        .column.pg {
+            border-left: 5px solid #336791;
+        }
+        
+        .column.mongo {
+            border-left: 5px solid #4DB33D;
+        }
+        
+        .column h3 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .column.pg h3 { color: #4a8dbd; }
+        .column.mongo h3 { color: #6dd55d; }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        li {
+            padding: 12px 0;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        li::before {
+            content: '→';
+            color: #4facfe;
+            font-weight: bold;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .stat-card .value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #4facfe;
+        }
+        
+        .stat-card .label {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 10px;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .result-row:last-child { border-bottom: none; }
+        
+        .result-row .query { font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+        .result-row .time-pg { color: #4a8dbd; font-weight: 600; }
+        .result-row .time-mongo { color: #6dd55d; font-weight: 600; }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.1));
+            border: 2px solid rgba(79, 172, 254, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .highlight-box h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .cap-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            margin: 40px 0;
+        }
+        
+        .cap-node {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .cap-node.c { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .cap-node.a { background: linear-gradient(135deg, #4DB33D, #6dd55d); }
+        .cap-node.p { background: linear-gradient(135deg, #ff9800, #ffb74d); }
+        
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .rec-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .rec-card.pg { border-top: 4px solid #336791; }
+        .rec-card.mongo { border-top: 4px solid #4DB33D; }
+        
+        .rec-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .rec-card.pg h4 { color: #4a8dbd; }
+        .rec-card.mongo h4 { color: #6dd55d; }
+        
+        .rec-card p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: rgba(79, 172, 254, 0.2);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(79, 172, 254, 0.4);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+        
+        .icon-large { font-size: 4rem; }
+        
+        .two-col-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        th {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge.pg { background: rgba(51, 103, 145, 0.4); color: #4a8dbd; }
+        .badge.mongo { background: rgba(77, 179, 61, 0.4); color: #6dd55d; }
+        
+        @media print {
+            .slide {
+                display: flex !important;
+                page-break-after: always;
+                height: auto;
+                min-height: 100vh;
+            }
+            .nav-buttons, .progress-bar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress"></div>
+    
+    <!-- SLIDE 1: Titlu -->
+    <div class="slide active" id="slide1">
+        <div class="slide-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div class="icon-large" style="margin-bottom: 30px;">🐘 vs 🍃</div>
+            <h1>PostgreSQL vs MongoDB</h1>
+            <p class="subtitle">Studiu Comparativ pentru Platforma E-Commerce</p>
+            <div style="margin-top: 60px; color: rgba(255,255,255,0.5);">
+                <p>BDNV - ANGHEL MADALINA</p>
+                <p style="margin-top: 10px;">Ianuarie 2026</p>
+            </div>
+        </div>
+        <div class="slide-number">1 / 10</div>
+    </div>
+    
+    <!-- SLIDE 2: Obiective -->
+    <div class="slide" id="slide2">
+        <div class="slide-content">
+            <h2>Obiectivele Proiectului</h2>
+            <div class="columns">
+                <div class="column">
+                    <h3>Ce am comparat?</h3>
+                    <ul>
+                        <li>Modelarea aceluiasi dataset E-Commerce</li>
+                        <li>Performanta query-urilor (5 tipuri)</li>
+                        <li>Comportament CAP Theorem</li>
+                        <li>ACID vs BASE consistency models</li>
+                        <li>Scalabilitate si arhitectura</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Dataset-ul</h3>
+                    <ul>
+                        <li><strong>8</strong> Categorii de produse</li>
+                        <li><strong>100</strong> Utilizatori</li>
+                        <li><strong>200</strong> Produse</li>
+                        <li><strong>150</strong> Comenzi</li>
+                        <li><strong>363</strong> Order Items</li>
+                        <li><strong>80</strong> Review-uri</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p> Date <strong>identice</strong> In ambele baze (Faker seed=42) pentru comparatie eficienta</p>
+            </div>
+        </div>
+        <div class="slide-number">2 / 10</div>
+    </div>
+    
+    <!-- SLIDE 3: Configuratie -->
+    <div class="slide" id="slide3">
+        <div class="slide-content">
+            <h2>Configuratia Sistemului</h2>
+            <div class="columns">
+                <div class="column pg">
+                    <h3>PostgreSQL</h3>
+                    <ul>
+                        <li>Versiune: <strong>16.3</strong></li>
+                        <li>Deployment: <strong>Local</strong> (localhost:5432)</li>
+                        <li>Driver: <strong>pg8000</strong> (Python)</li>
+                        <li>Schema: <strong>6 tabele normalizate</strong></li>
+                        <li>Indexuri: B-tree pe FK-uri</li>
+                    </ul>
+                </div>
+                <div class="column mongo">
+                    <h3>MongoDB</h3>
+                    <ul>
+                        <li>Versiune: <strong>8.0.17</strong></li>
+                        <li>Deployment: <strong>Atlas Cloud</strong> (M0 Free Tier)</li>
+                        <li>Driver: <strong>pymongo</strong></li>
+                        <li>Schema: <strong>6 colectii document-based</strong></li>
+                        <li>Indexuri: Pe _id si referinte</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 40px; padding: 20px; background: rgba(255,152,0,0.1); border-left: 4px solid #ff9800; border-radius: 10px;">
+                <p> <strong>Nota:</strong> PostgreSQL ruleaza local, MongoDB in cloud</p>
+            </div>
+        </div>
+        <div class="slide-number">3 / 10</div>
+    </div>
+    
+    <!-- SLIDE 4: Schema Comparison -->
+    <div class="slide" id="slide4">
+        <div class="slide-content">
+            <h2>Comparatie Schema</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>PostgreSQL (Relational)</th>
+                        <th>MongoDB (Document)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Model</td>
+                        <td>Tabele normalizate + JOINs</td>
+                        <td>Documente JSON flexibile</td>
+                    </tr>
+                    <tr>
+                        <td>Schema</td>
+                        <td>Strict definita (DDL)</td>
+                        <td>Schema-less / Schema-on-read</td>
+                    </tr>
+                    <tr>
+                        <td>Relatii</td>
+                        <td><span class="badge pg">Foreign Keys</span></td>
+                        <td><span class="badge mongo">Embedded / Reference</span></td>
+                    </tr>
+                    <tr>
+                        <td>Integritate</td>
+                        <td>Enforced la DB level</td>
+                        <td>Application level</td>
+                    </tr>
+                    <tr>
+                        <td>Migrari</td>
+                        <td>ALTER TABLE (required)</td>
+                        <td>Optionale</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-number">4 / 10</div>
+    </div>
+    
+    <!-- SLIDE 5: Performance Results -->
+    <div class="slide" id="slide5">
+        <div class="slide-content">
+            <h2>Rezultate Performanta</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value" style="color: #4a8dbd;">10.95ms</div>
+                    <div class="label">PostgreSQL Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" style="color: #6dd55d;">549.73ms</div>
+                    <div class="label">MongoDB Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">~50x</div>
+                    <div class="label">Diferenta (local vs cloud)</div>
+                </div>
+            </div>
+            <table style="margin-top: 40px;">
+                <thead>
+                    <tr>
+                        <th>Query Type</th>
+                        <th>PostgreSQL</th>
+                        <th>MongoDB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Select All (200 products)</td>
+                        <td style="color: #4a8dbd;">5.53 ms</td>
+                        <td style="color: #6dd55d;">188.46 ms</td>
+                    </tr>
+                    <tr>
+                        <td>JOIN Query</td>
+                        <td style="color: #4a8dbd;">1.90 ms</td>
+                        <td style="color: #6dd55d;">140.15 ms</td>
+                    </tr>
+                    <tr>
+                        <td>Aggregation</td>
+                        <td style="color: #4a8dbd;">1.26 ms</td>
+                        <td style="color: #6dd55d;">85.14 ms</td>
+                    </tr>
+                    <tr>
+                        <td>LIKE Search</td>
+                        <td style="color: #4a8dbd;">0.58 ms</td>
+                        <td style="color: #6dd55d;">66.61 ms</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-number">5 / 10</div>
+    </div>
+    
+    <!-- SLIDE 6: CAP Theorem -->
+    <div class="slide" id="slide6">
+        <div class="slide-content">
+            <h2>CAP Theorem Analysis</h2>
+            <div class="cap-diagram">
+                <div class="cap-node c">C</div>
+                <div class="cap-node a">A</div>
+                <div class="cap-node p">P</div>
+            </div>
+            <div style="text-align: center; margin-bottom: 30px; color: rgba(255,255,255,0.7);">
+                <strong>C</strong>onsistency • <strong>A</strong>vailability • <strong>P</strong>artition Tolerance
+            </div>
+            <div class="columns">
+                <div class="column pg">
+                    <h3> PostgreSQL → CP</h3>
+                    <ul>
+                        <li>Strong Consistency (ACID)</li>
+                        <li>Sacrifica Availability in partition</li>
+                        <li>Transaction Rollback: ✅ PASSED</li>
+                        <li>FK Constraints: ✅ PASSED</li>
+                        <li>Avg Response: <strong>0.451 ms</strong></li>
+                    </ul>
+                </div>
+                <div class="column mongo">
+                    <h3>MongoDB → CP (tunable)</h3>
+                    <ul>
+                        <li>Tunable Consistency</li>
+                        <li>Replica Sets pentru HA</li>
+                        <li>Atomic Update: ✅ PASSED</li>
+                        <li>Write Concern: ✅ PASSED</li>
+                        <li>Avg Response: <strong>66.87 ms</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">6 / 10</div>
+    </div>
+    
+    <!-- SLIDE 7: ACID vs BASE -->
+    <div class="slide" id="slide7">
+        <div class="slide-content">
+            <h2>ACID vs BASE</h2>
+            <div class="columns">
+                <div class="column pg">
+                    <h3>ACID (PostgreSQL)</h3>
+                    <ul>
+                        <li><strong>A</strong>tomicity - All or nothing</li>
+                        <li><strong>C</strong>onsistency - Valid states only</li>
+                        <li><strong>I</strong>solation - No interference</li>
+                        <li><strong>D</strong>urability - Survives crashes</li>
+                    </ul>
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(51,103,145,0.2); border-radius: 10px; font-size: 0.9rem;">
+                    Ideal pentru: <strong>Orders, Payments, Inventory</strong>
+                    </p>
+                </div>
+                <div class="column mongo">
+                    <h3> BASE (MongoDB - optional)</h3>
+                    <ul>
+                        <li><strong>B</strong>asically <strong>A</strong>vailable</li>
+                        <li><strong>S</strong>oft State</li>
+                        <li><strong>E</strong>ventual Consistency</li>
+                    </ul>
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(77,179,61,0.2); border-radius: 10px; font-size: 0.9rem;">
+                        Ideal pentru: <strong>Sessions, Logs, Analytics</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">7 / 10</div>
+    </div>
+    
+    <!-- SLIDE 8: Trade-offs -->
+    <div class="slide" id="slide8">
+        <div class="slide-content">
+            <h2>Trade-off Matrix</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criteriu</th>
+                        <th>PostgreSQL</th>
+                        <th>MongoDB</th>
+                        <th>Castigator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Consistency</td>
+                        <td>9/10</td>
+                        <td>6/10</td>
+                        <td><span class="badge pg">PostgreSQL</span></td>
+                    </tr>
+                    <tr>
+                        <td>Scalability</td>
+                        <td>6/10</td>
+                        <td>9/10</td>
+                        <td><span class="badge mongo">MongoDB</span></td>
+                    </tr>
+                    <tr>
+                        <td>Data Integrity</td>
+                        <td>10/10</td>
+                        <td>7/10</td>
+                        <td><span class="badge pg">PostgreSQL</span></td>
+                    </tr>
+                    <tr>
+                        <td>Dev Experience</td>
+                        <td>7/10</td>
+                        <td>9/10</td>
+                        <td><span class="badge mongo">MongoDB</span></td>
+                    </tr>
+                    <tr>
+                        <td>Availability (native)</td>
+                        <td>7/10</td>
+                        <td>9/10</td>
+                        <td><span class="badge mongo">MongoDB</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+                * Scoruri bazate pe: teste efectuate + documentatie oficiala + best practices industrie
+            </p>
+        </div>
+        <div class="slide-number">8 / 10</div>
+    </div>
+    
+    <!-- SLIDE 9: Recommendations -->
+    <div class="slide" id="slide9">
+        <div class="slide-content">
+            <h2> Recomandari pentru E-Commerce</h2>
+            <div class="recommendation-grid">
+                <div class="rec-card pg">
+                    <h4> PostgreSQL pentru:</h4>
+                    <p>Orders & Payments • User Accounts • Inventory • Financial Reports • Audit Logs</p>
+                </div>
+                <div class="rec-card mongo">
+                    <h4> MongoDB pentru:</h4>
+                    <p>Product Catalog • User Sessions • Recommendations • Analytics • Content Management</p>
+                </div>
+            </div>
+            <div class="highlight-box" style="margin-top: 40px;">
+                <h3> Polyglot Persistence</h3>
+                <p>Arhitectura moderna: foloseste <strong>ambele</strong> baze de date pentru cerinte diferite!</p>
+                <div style="margin-top: 20px; display: flex; justify-content: center; gap: 30px; font-size: 0.9rem;">
+                    <span><strong>Tier 1:</strong> PostgreSQL (Critical)</span>
+                    <span><strong>Tier 2:</strong> MongoDB (Flexible)</span>
+                    <span><strong>Tier 3:</strong> Redis (Cache)</span>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">9 / 10</div>
+    </div>
+    
+    <!-- SLIDE 10: Conclusions -->
+    <div class="slide" id="slide10">
+        <div class="slide-content" style="display: flex; flex-direction: column; justify-content: center;">
+            <h2 style="text-align: center;">Concluzii Finale</h2>
+            <div class="two-col-list" style="margin-top: 40px;">
+                <ul>
+                    <li>Nu exista "best database" - depinde de use case</li>
+                    <li>PostgreSQL: ACID obligatoriu pentru tranzactii</li>
+                    <li>MongoDB: Flexibilitate si scalare orizontala</li>
+                </ul>
+                <ul>
+                    <li>CAP Theorem: Ambele sunt CP by default</li>
+                    <li>Deployment-ul afecteaza major performanta</li>
+                    <li>Polyglot Persistence = best practice modern</li>
+                </ul>
+            </div>
+            <div style="text-align: center; margin-top: 60px;">
+                <p style="font-size: 1.5rem; color: #4facfe;">Multumesc pentru atentie!</p>
+            </div>
+        </div>
+        <div class="slide-number">10 / 10</div>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="prevSlide()">← inapoi</button>
+        <button class="nav-btn" onclick="nextSlide()">inainte →</button>
+    </div>
+    
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+        
+        function showSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById('slide' + n).classList.add('active');
+            document.getElementById('progress').style.width = (n / totalSlides * 100) + '%';
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+        
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+        
+        showSlide(1);
+    </script>
+</body>
+</html>

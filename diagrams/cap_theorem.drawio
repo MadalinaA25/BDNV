@@ -1,0 +1,136 @@
+﻿<mxfile host="app.diagrams.net" modified="2026-01-22T23:00:00.000Z" agent="Mozilla/5.0" version="21.0.0">
+  <diagram name="CAP Theorem Analysis" id="cap-theorem">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="CAP Theorem - PostgreSQL vs MongoDB Analysis" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="250" y="20" width="500" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- CAP Triangle -->
+        <mxCell id="triangle" value="" style="triangle;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;strokeWidth=3;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="300" y="100" width="400" height="350" as="geometry" />
+        </mxCell>
+        
+        <!-- C Node -->
+        <mxCell id="c-node" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4facfe;strokeColor=#0066cc;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="450" y="80" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c-label" value="C" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=36;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="475" y="100" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c-text" value="Consistency" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#0066cc;" vertex="1" parent="1">
+          <mxGeometry x="450" y="145" width="100" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- A Node -->
+        <mxCell id="a-node" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4DB33D;strokeColor=#2d6b23;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="250" y="400" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="a-label" value="A" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=36;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="275" y="420" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="a-text" value="Availability" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#2d6b23;" vertex="1" parent="1">
+          <mxGeometry x="250" y="505" width="100" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- P Node -->
+        <mxCell id="p-node" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#cc7a00;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="650" y="400" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p-label" value="P" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=36;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="675" y="420" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p-text" value="Partition&#xa;Tolerance" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#cc7a00;" vertex="1" parent="1">
+          <mxGeometry x="650" y="505" width="100" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- PostgreSQL Position (CP) -->
+        <mxCell id="pg-pos" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#336791;strokeColor=#1a3a52;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pg-icon" value="🐘" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=28;" vertex="1" parent="1">
+          <mxGeometry x="535" y="210" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="pg-label" value="PostgreSQL&#xa;(CP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#336791;" vertex="1" parent="1">
+          <mxGeometry x="510" y="280" width="100" height="35" as="geometry" />
+        </mxCell>
+        
+        <!-- MongoDB Position (CP with tunable) -->
+        <mxCell id="mongo-pos" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4DB33D;strokeColor=#2d6b23;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="430" y="310" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mongo-icon" value="🍃" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=28;" vertex="1" parent="1">
+          <mxGeometry x="445" y="320" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="mongo-label" value="MongoDB&#xa;(CP tunable)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#4DB33D;" vertex="1" parent="1">
+          <mxGeometry x="400" y="390" width="100" height="35" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows showing movement -->
+        <mxCell id="mongo-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4DB33D;dashed=1;curved=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="470" y="390" as="sourcePoint" />
+            <mxPoint x="350" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-label" value="tunable to AP" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=10;fontStyle=2;fontColor=#4DB33D;" vertex="1" parent="1">
+          <mxGeometry x="340" y="380" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- PostgreSQL Details Box -->
+        <mxCell id="pg-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#336791;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="100" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="pg-title" value="🐘 PostgreSQL (CP System)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#336791;" vertex="1" parent="1">
+          <mxGeometry x="830" y="110" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="pg-details" value="✅ Strong Consistency (ACID)&#xa;✅ Transaction Rollback: PASSED&#xa;✅ Foreign Key Constraints: PASSED&#xa;&#xa;📊 Test Results:&#xa;• Avg Response: 0.451 ms&#xa;• Max Response: 4.994 ms&#xa;• Queries Tested: 20&#xa;&#xa;⚠️ Requires external tools for HA&#xa;   (Patroni, repmgr, pgpool)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="790" y="140" width="260" height="150" as="geometry" />
+        </mxCell>
+        
+        <!-- MongoDB Details Box -->
+        <mxCell id="mongo-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#4DB33D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="330" width="280" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="mongo-title" value="🍃 MongoDB (CP Tunable)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#4DB33D;" vertex="1" parent="1">
+          <mxGeometry x="830" y="340" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="mongo-details" value="✅ CP by default (writeConcern: majority)&#xa;✅ Atomic Update: PASSED&#xa;✅ Write Concern Test: PASSED&#xa;&#xa;📊 Test Results:&#xa;• Avg Response: 66.865 ms&#xa;• Max Response: 447.852 ms&#xa;• Queries Tested: 20&#xa;• Note: Cloud network latency&#xa;&#xa;🔄 Tunable Consistency:&#xa;   • readConcern: local → eventual&#xa;   • writeConcern: 1 → faster writes" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=11;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="790" y="370" width="260" height="170" as="geometry" />
+        </mxCell>
+        
+        <!-- CAP Explanation -->
+        <mxCell id="exp-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="exp-title" value="CAP Theorem" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="110" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="exp-text" value="(Brewer, 2000)&#xa;&#xa;A distributed system can&#xa;only guarantee 2 of 3:&#xa;&#xa;C - Every read receives the&#xa;     most recent write&#xa;&#xa;A - Every request receives&#xa;     a response&#xa;&#xa;P - System operates despite&#xa;     network partitions&#xa;&#xa;In practice: P is mandatory&#xa;→ Choose C or A" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="140" width="180" height="200" as="geometry" />
+        </mxCell>
+        
+        <!-- Conclusion Box -->
+        <mxCell id="conc-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="580" width="400" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-title" value="🎯 Conclusion for E-Commerce" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="590" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-text" value="• Orders &amp; Payments → PostgreSQL (Strong Consistency required)&#xa;• Product Catalog → MongoDB (Flexibility, eventual consistency OK)&#xa;• User Sessions → MongoDB/Redis (Availability &gt; Consistency)&#xa;• Analytics → MongoDB (Write-heavy, eventual consistency fine)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=11;spacingLeft=15;" vertex="1" parent="1">
+          <mxGeometry x="50" y="620" width="380" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Test Date -->
+        <mxCell id="date" value="Test Date: 22 January 2026" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="880" y="750" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

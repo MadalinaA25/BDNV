@@ -1,0 +1,525 @@
+# MongoDB Collections Schema (NoSQL - Document Oriented)
+
+## Modelul de Date pentru E-Commerce Platform în MongoDB
+
+MongoDB folosește colecții cu documente flexible. Iată structura optimă:
+
+---
+
+## 1. CATEGORIES Collection
+```json
+db.categories.insertMany([
+  {
+    _id: ObjectId(),
+    name: "Electronics",
+    description: "Electronic devices and accessories",
+    slug: "electronics",
+    icon: "📱",
+    parent_category: null,
+    created_at: ISODate(),
+    updated_at: ISODate()
+  }
+])
+
+// Index
+db.categories.createIndex({ name: 1 })
+db.categories.createIndex({ slug: 1 }, { unique: true })
+```
+
+---
+
+## 2. USERS Collection
+```json
+db.users.insertMany([
+  {
+    _id: ObjectId(),
+    username: "john_doe",
+    email: "john@example.com",
+    password_hash: "hashed_password",
+    profile: {
+      first_name: "John",
+      last_name: "Doe",
+      phone: "+40123456789",
+      avatar_url: "https://...",
+      bio: "Tech enthusiast"
+    },
+    address: {
+      street: "Str. Principală 123",
+      city: "București",
+      postal_code: "010101",
+      country: "Romania"
+    },
+    stats: {
+      total_orders: 15,
+      lifetime_value: 2500.50,
+      avg_rating_as_seller: 4.8,
+      reviews_count: 42
+    },
+    preferences: {
+      newsletter_enabled: true,
+      notifications_enabled: true,
+      preferred_currency: "RON"
+    },
+    created_at: ISODate(),
+    updated_at: ISODate(),
+    last_login: ISODate(),
+    is_active: true
+  }
+])
+
+// Indexes
+db.users.createIndex({ email: 1 }, { unique: true })
+db.users.createIndex({ username: 1 }, { unique: true })
+db.users.createIndex({ created_at: -1 })
+```
+
+---
+
+## 3. PRODUCTS Collection (DENORMALIZED - Optimizat pentru lecturi)
+```json
+db.products.insertMany([
+  {
+    _id: ObjectId(),
+    sku: "PROD-00001",
+    name: "Laptop XYZ Pro",
+    description: "High-performance laptop for professionals",
+    
+    category: {
+      id: ObjectId(),
+      name: "Electronics"
+    },
+    
+    pricing: {
+      price: 1299.99,
+      currency: "USD",
+      discount_percentage: 0,
+      discounted_price: 1299.99,
+      cost: 800.00
+    },
+    
+    inventory: {
+      quantity_available: 150,
+      quantity_reserved: 23,
+      quantity_sold: 1247,
+      warehouse_location: "Warehouse A - Shelf 15",
+      reorder_level: 50,
+      last_restock: ISODate()
+    },
+    
+    specifications: {
+      brand: "TechBrand",
+      model: "XYZ-Pro-15",
+      weight_kg: 1.8,
+      dimensions: {
+        width_cm: 35.5,
+        depth_cm: 23.0,
+        height_cm: 1.9
+      },
+      processor: "Intel Core i9",
+      ram_gb: 16,
+      storage_gb: 512,
+      screen_size_inches: 15.6
+    },
+    
+    ratings: {
+      average_rating: 4.6,
+      rating_count: 342,
+      five_star: 250,
+      four_star: 70,
+      three_star: 15,
+      two_star: 5,
+      one_star: 2
+    },
+    
+    reviews_summary: [
+      {
+        id: ObjectId(),
+        user_id: ObjectId(),
+        user_name: "Maria",
+        rating: 5,
+        title: "Excellent laptop!",
+        comment: "Very fast and reliable",
+        helpful_count: 127,
+        created_at: ISODate()
+      }
+    ],
+    
+    images: [
+      {
+        url: "https://cdn.example.com/product-1.jpg",
+        alt_text: "Front view",
+        is_primary: true
+      },
+      {
+        url: "https://cdn.example.com/product-2.jpg",
+        alt_text: "Side view",
+        is_primary: false
+      }
+    ],
+    
+    tags: ["laptop", "work", "portable", "high-performance"],
+    related_products: [ObjectId(), ObjectId()],
+    
+    metadata: {
+      views_count: 5432,
+      wishlist_count: 234,
+      is_active: true,
+      is_featured: true,
+      is_new: false
+    },
+    
+    created_at: ISODate(),
+    updated_at: ISODate(),
+    last_sold: ISODate()
+  }
+])
+
+// Indexes
+db.products.createIndex({ sku: 1 }, { unique: true })
+db.products.createIndex({ name: 1 })
+db.products.createIndex({ "category.name": 1 })
+db.products.createIndex({ "pricing.price": 1 })
+db.products.createIndex({ "ratings.average_rating": -1 })
+db.products.createIndex({ is_active: 1 })
+db.products.createIndex({ tags: 1 })
+```
+
+---
+
+## 4. ORDERS Collection (DENORMALIZED - Client view)
+```json
+db.orders.insertMany([
+  {
+    _id: ObjectId(),
+    order_number: "ORD-2024-0001234",
+    
+    user: {
+      id: ObjectId(),
+      email: "customer@example.com",
+      first_name: "John",
+      last_name: "Doe"
+    },
+    
+    items: [
+      {
+        product_id: ObjectId(),
+        sku: "PROD-00001",
+        name: "Laptop XYZ Pro",
+        quantity: 1,
+        unit_price: 1299.99,
+        total_price: 1299.99,
+        specifications: {
+          processor: "Intel Core i9",
+          ram_gb: 16
+        }
+      },
+      {
+        product_id: ObjectId(),
+        sku: "ACC-00234",
+        name: "Laptop Bag",
+        quantity: 1,
+        unit_price: 49.99,
+        total_price: 49.99
+      }
+    ],
+    
+    pricing: {
+      subtotal: 1349.98,
+      tax: 269.99,
+      shipping: 15.00,
+      discount: 0,
+      discount_code: null,
+      total: 1634.97,
+      currency: "USD"
+    },
+    
+    status: {
+      current: "shipped",
+      history: [
+        {
+          status: "pending",
+          timestamp: ISODate(),
+          notes: "Order received"
+        },
+        {
+          status: "processing",
+          timestamp: ISODate(),
+          notes: "Preparing for shipment"
+        },
+        {
+          status: "shipped",
+          timestamp: ISODate(),
+          notes: "Order dispatched",
+          tracking_number: "1Z999AA10123456784"
+        }
+      ]
+    },
+    
+    shipping: {
+      method: "Express",
+      address: "Str. Principală 123, București",
+      city: "București",
+      postal_code: "010101",
+      country: "Romania",
+      estimated_delivery: ISODate("2024-02-15"),
+      tracking_number: "1Z999AA10123456784"
+    },
+    
+    billing: {
+      same_as_shipping: true,
+      address: "Str. Principală 123, București",
+      city: "București"
+    },
+    
+    payment: {
+      method: "credit_card",
+      status: "completed",
+      gateway: "Stripe",
+      transaction_id: "txn_123456789",
+      card_last_four: "4242",
+      processed_at: ISODate()
+    },
+    
+    notes: "Customer requested gift wrapping",
+    customer_notes: "Please leave at reception if not home",
+    
+    created_at: ISODate("2024-02-05"),
+    updated_at: ISODate("2024-02-12"),
+    shipped_at: ISODate("2024-02-10"),
+    estimated_delivery_date: ISODate("2024-02-15")
+  }
+])
+
+// Indexes
+db.orders.createIndex({ order_number: 1 }, { unique: true })
+db.orders.createIndex({ "user.id": 1 })
+db.orders.createIndex({ "user.email": 1 })
+db.orders.createIndex({ "status.current": 1 })
+db.orders.createIndex({ created_at: -1 })
+db.orders.createIndex({ "shipping.tracking_number": 1 })
+```
+
+---
+
+## 5. REVIEWS Collection (Separată pentru scalare)
+```json
+db.reviews.insertMany([
+  {
+    _id: ObjectId(),
+    product_id: ObjectId(),
+    order_id: ObjectId(),
+    
+    author: {
+      id: ObjectId(),
+      username: "john_doe",
+      avatar_url: "https://..."
+    },
+    
+    rating: 5,
+    title: "Best laptop I've ever owned!",
+    content: "Great performance, amazing battery life...",
+    
+    review_images: [
+      {
+        url: "https://cdn.example.com/review-1.jpg",
+        uploaded_at: ISODate()
+      }
+    ],
+    
+    verified_purchase: true,
+    
+    engagement: {
+      helpful_count: 127,
+      unhelpful_count: 3,
+      comment_count: 15
+    },
+    
+    comments: [
+      {
+        id: ObjectId(),
+        author_id: ObjectId(),
+        author_name: "Seller",
+        content: "Thank you for the great review!",
+        created_at: ISODate()
+      }
+    ],
+    
+    created_at: ISODate("2024-01-15"),
+    updated_at: ISODate("2024-01-15")
+  }
+])
+
+// Indexes
+db.reviews.createIndex({ product_id: 1, rating: -1 })
+db.reviews.createIndex({ "author.id": 1 })
+db.reviews.createIndex({ created_at: -1 })
+db.reviews.createIndex({ verified_purchase: 1 })
+```
+
+---
+
+## 6. INVENTORY Collection (Warehouse management)
+```json
+db.inventory.insertMany([
+  {
+    _id: ObjectId(),
+    product_id: ObjectId(),
+    sku: "PROD-00001",
+    
+    locations: [
+      {
+        warehouse: "Warehouse A",
+        shelf: "15-A",
+        quantity: 50,
+        last_counted: ISODate()
+      },
+      {
+        warehouse: "Warehouse B",
+        shelf: "22-C",
+        quantity: 100,
+        last_counted: ISODate()
+      }
+    ],
+    
+    summary: {
+      total_available: 150,
+      total_reserved: 23,
+      total_sold: 1247,
+      reorder_level: 50,
+      last_restock: ISODate()
+    },
+    
+    movement_history: [
+      {
+        quantity_change: 50,
+        type: "restock",
+        timestamp: ISODate(),
+        notes: "Restock from supplier"
+      },
+      {
+        quantity_change: -1,
+        type: "sold",
+        order_id: ObjectId(),
+        timestamp: ISODate()
+      }
+    ],
+    
+    updated_at: ISODate()
+  }
+])
+
+// Indexes
+db.inventory.createIndex({ sku: 1 }, { unique: true })
+db.inventory.createIndex({ product_id: 1 }, { unique: true })
+```
+
+---
+
+## 7. NOTIFICATIONS Collection (For real-time updates)
+```json
+db.notifications.insertMany([
+  {
+    _id: ObjectId(),
+    user_id: ObjectId(),
+    type: "order_status",
+    title: "Your order has been shipped",
+    message: "Order ORD-2024-0001234 is on its way!",
+    data: {
+      order_id: ObjectId(),
+      tracking_number: "1Z999AA10123456784"
+    },
+    read: false,
+    created_at: ISODate(),
+    expires_at: ISODate(new Date().getTime() + 30 * 24 * 60 * 60 * 1000) // 30 days
+  }
+])
+
+// Index
+db.notifications.createIndex({ user_id: 1, created_at: -1 })
+db.notifications.createIndex({ expires_at: 1 }, { expireAfterSeconds: 0 })
+```
+
+---
+
+## SCHEMA DESIGN DECISIONS (NoSQL)
+
+### 1. DENORMALIZATION STRATEGY:
+- **PRODUCTS:** Include category info + top reviews INLINE (avoid joins)
+- **ORDERS:** Embed customer info + item details (snapshot at purchase time)
+- **REVIEWS:** Separate collection (can grow large, frequent reads)
+
+### 2. EMBEDDING vs REFERENCING:
+
+**EMBEDDED (Better for joins that would be expensive in SQL):**
+- User profile in Orders (read-only snapshot)
+- Category info in Products
+- Recent reviews in Products (limit to top 5)
+
+**REFERENCED (For relationships that need updates):**
+- User -> Orders (array of IDs if frequently updated)
+- Product -> Reviews (separate collection)
+
+### 3. FLEXIBILITY BENEFITS:
+- Add fields without schema migration
+- Store heterogeneous data (variants, attributes)
+- Nested arrays for related data
+
+### 4. SCALABILITY:
+- Horizontal sharding on `user_id` or `product_id`
+- Replica sets for HA
+- Read replicas for analytics queries
+
+### 5. PERFORMANCE OPTIMIZATIONS:
+- Sparse indexes for optional fields
+- TTL indexes for temporary data (notifications)
+- Compound indexes for frequent query patterns
+- Text indexes for search queries
+
+---
+
+## INDEXES CREATED
+
+```javascript
+// Categories
+db.categories.createIndex({ name: 1 })
+db.categories.createIndex({ slug: 1 }, { unique: true })
+
+// Users
+db.users.createIndex({ email: 1 }, { unique: true })
+db.users.createIndex({ username: 1 }, { unique: true })
+db.users.createIndex({ created_at: -1 })
+
+// Products
+db.products.createIndex({ sku: 1 }, { unique: true })
+db.products.createIndex({ name: 1 })
+db.products.createIndex({ "category.name": 1 })
+db.products.createIndex({ "pricing.price": 1 })
+db.products.createIndex({ "ratings.average_rating": -1 })
+db.products.createIndex({ tags: 1 })
+
+// Orders
+db.orders.createIndex({ order_number: 1 }, { unique: true })
+db.orders.createIndex({ "user.id": 1 })
+db.orders.createIndex({ "status.current": 1 })
+db.orders.createIndex({ created_at: -1 })
+
+// Reviews
+db.reviews.createIndex({ product_id: 1, rating: -1 })
+db.reviews.createIndex({ created_at: -1 })
+
+// Notifications (TTL)
+db.notifications.createIndex({ expires_at: 1 }, { expireAfterSeconds: 0 })
+```
+
+---
+
+## CONNECTION STRING FOR MONGODB ATLAS
+
+```
+mongodb+srv://admin_user:PASSWORD@cluster-name.mongodb.net/ecommerce_db?retryWrites=true&w=majority
+```
+
+Replace:
+- `admin_user` - Your MongoDB user
+- `PASSWORD` - Your password
+- `cluster-name` - Your cluster name
