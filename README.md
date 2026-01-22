@@ -3,7 +3,7 @@
 
 **Data:** ianuarie 2026  
 **Autor:**  Anghel Madalina
-**Status:** Complet
+Video link: https://youtu.be/2uuj_oQwMVk
 
 ---
 

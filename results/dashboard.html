@@ -728,7 +728,7 @@
                 <div class="meta">
                     <div class="meta-item">
                         <i class="fas fa-calendar-alt"></i>
-                        23.01.2026 00:41
+                        23.01.2026 00:58
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-server"></i>
@@ -827,7 +827,7 @@
             <div class="grid-2">
                 <div class="stat-card winner">
                     <div class="icon"><i class="fas fa-elephant" style="color: var(--pg-color);"></i></div>
-                    <div class="value pg-color">10.57ms</div>
+                    <div class="value pg-color">9.98ms</div>
                     <div class="label">PostgreSQL - Timp Total</div>
                     <p style="margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary);">
                         Deployment: Local Installation
@@ -835,7 +835,7 @@
                 </div>
                 <div class="stat-card ">
                     <div class="icon"><i class="fas fa-leaf" style="color: var(--mongo-color);"></i></div>
-                    <div class="value mongo-color">457.40ms</div>
+                    <div class="value mongo-color">513.36ms</div>
                     <div class="label">MongoDB - Timp Total</div>
                     <p style="margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary);">
                         Deployment: Atlas Cloud Cluster
@@ -846,7 +846,7 @@
             <div style="text-align: center; margin-top: 20px; padding: 18px; background: rgba(255,255,255,0.05); border-radius: 15px;">
                 <span style="font-size: 1.2rem; color: var(--accent);">
                     <i class="fas fa-trophy" style="margin-right: 10px;"></i>
-                    PostgreSQL este ~43x mai rapid (local vs cloud)
+                    PostgreSQL este ~51x mai rapid (local vs cloud)
                 </span>
                 <p style="margin-top: 8px; color: var(--text-secondary); font-size: 0.85rem;">
                      Diferenta se datoreaza in principal deployment-ului diferit: PostgreSQL ruleaza local vs MongoDB in cloud
@@ -908,44 +908,44 @@
                             
                     <tr>
                         <td><strong>Select All</strong></td>
-                        <td class="pg-color"><strong>5.73ms</strong></td>
-                        <td class="mongo-color"><strong>184.96ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +179.23ms (97%)</span></td>
+                        <td class="pg-color"><strong>4.53ms</strong></td>
+                        <td class="mongo-color"><strong>241.82ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +237.28ms (98%)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Filter (WHERE)</strong></td>
-                        <td class="pg-color"><strong>0.69ms</strong></td>
-                        <td class="mongo-color"><strong>42.88ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +42.19ms (98%)</span></td>
+                        <td class="pg-color"><strong>0.65ms</strong></td>
+                        <td class="mongo-color"><strong>43.20ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +42.55ms (98%)</span></td>
                     </tr>
                     <tr>
                         <td><strong>JOIN/Lookup</strong></td>
-                        <td class="pg-color"><strong>2.03ms</strong></td>
-                        <td class="mongo-color"><strong>100.97ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +98.94ms (98%)</span></td>
+                        <td class="pg-color"><strong>2.08ms</strong></td>
+                        <td class="mongo-color"><strong>97.13ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +95.06ms (98%)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Aggregation</strong></td>
-                        <td class="pg-color"><strong>0.60ms</strong></td>
-                        <td class="mongo-color"><strong>42.75ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +42.15ms (99%)</span></td>
+                        <td class="pg-color"><strong>0.53ms</strong></td>
+                        <td class="mongo-color"><strong>44.16ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +43.63ms (99%)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Complex JOIN</strong></td>
-                        <td class="pg-color"><strong>0.93ms</strong></td>
-                        <td class="mongo-color"><strong>42.45ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +41.52ms (98%)</span></td>
+                        <td class="pg-color"><strong>1.67ms</strong></td>
+                        <td class="mongo-color"><strong>43.62ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +41.95ms (96%)</span></td>
                     </tr>
                     <tr>
                         <td><strong>Text Search</strong></td>
-                        <td class="pg-color"><strong>0.59ms</strong></td>
-                        <td class="mongo-color"><strong>43.39ms</strong></td>
-                        <td><span class="winner-badge pg-bg">PostgreSQL +42.80ms (99%)</span></td>
+                        <td class="pg-color"><strong>0.53ms</strong></td>
+                        <td class="mongo-color"><strong>43.43ms</strong></td>
+                        <td><span class="winner-badge pg-bg">PostgreSQL +42.90ms (99%)</span></td>
                     </tr>
                             <tr style="background: rgba(79, 172, 254, 0.1); font-weight: bold;">
                                 <td><strong>TOTAL</strong></td>
-                                <td class="pg-color"><strong>10.57ms</strong></td>
-                                <td class="mongo-color"><strong>457.40ms</strong></td>
+                                <td class="pg-color"><strong>9.98ms</strong></td>
+                                <td class="mongo-color"><strong>513.36ms</strong></td>
                                 <td><span class="badge pg">PostgreSQL</span></td>
                             </tr>
                         </tbody>
@@ -997,22 +997,22 @@
                 <div class="grid-4">
                     <div class="stat-card">
                         <div class="icon"><i class="fas fa-bolt pg-color"></i></div>
-                        <div class="value pg-color">0.30ms</div>
+                        <div class="value pg-color">0.24ms</div>
                         <div class="label">PostgreSQL Avg</div>
                     </div>
                     <div class="stat-card">
                         <div class="icon"><i class="fas fa-arrow-up pg-color"></i></div>
-                        <div class="value pg-color">2.52ms</div>
+                        <div class="value pg-color">2.20ms</div>
                         <div class="label">PostgreSQL Max</div>
                     </div>
                     <div class="stat-card">
                         <div class="icon"><i class="fas fa-bolt mongo-color"></i></div>
-                        <div class="value mongo-color">67.92ms</div>
+                        <div class="value mongo-color">65.68ms</div>
                         <div class="label">MongoDB Avg</div>
                     </div>
                     <div class="stat-card">
                         <div class="icon"><i class="fas fa-arrow-up mongo-color"></i></div>
-                        <div class="value mongo-color">462.42ms</div>
+                        <div class="value mongo-color">441.64ms</div>
                         <div class="label">MongoDB Max</div>
                     </div>
                 </div>
@@ -1767,8 +1767,8 @@
                         <div class="details">
                             <h4>Availability Test</h4>
                             <p>
-                                Avg: <strong class="pg-color">0.303ms</strong> | 
-                                Max: <strong>2.515ms</strong> | 
+                                Avg: <strong class="pg-color">0.239ms</strong> | 
+                                Max: <strong>2.199ms</strong> | 
                                 Queries: 20
                             </p>
                         </div>
@@ -1803,7 +1803,7 @@
                         <div class="details">
                             <h4>Write Concern Test</h4>
                             <p>
-                                Write time: 49.83ms<br>
+                                Write time: 51.11ms<br>
                                 <span class="success">
                                      PASSED - Write acknowledged
                                 </span>
@@ -1818,8 +1818,8 @@
                         <div class="details">
                             <h4>Availability Test</h4>
                             <p>
-                                Avg: <strong class="mongo-color">67.916ms</strong> | 
-                                Max: <strong>462.419ms</strong> | 
+                                Avg: <strong class="mongo-color">65.678ms</strong> | 
+                                Max: <strong>441.640ms</strong> | 
                                 Queries: 20<br>
                                 <span style="font-size: 0.8rem; color: var(--text-secondary);">
                                     (Higher latency due to cloud network)
@@ -2008,7 +2008,7 @@
                 <a href="https://github.com"><i class="fab fa-github"></i> Source Code</a>
             </div>
             <p style="margin-top: 15px; font-size: 0.8rem;">
-                Dashboard generat automat cu Python • 23.01.2026 00:41
+                Dashboard generat automat cu Python • 23.01.2026 00:58
             </p>
         </footer>
     </div>
@@ -2055,7 +2055,7 @@
                 datasets: [
                     {
                         label: 'PostgreSQL (ms)',
-                        data: [5.728, 0.692, 2.033, 0.6, 0.928, 0.59],
+                        data: [4.534, 0.649, 2.076, 0.53, 1.667, 0.526],
                         backgroundColor: 'rgba(51, 103, 145, 0.8)',
                         borderColor: '#336791',
                         borderWidth: 2,
@@ -2063,7 +2063,7 @@
                     },
                     {
                         label: 'MongoDB (ms)',
-                        data: [184.959, 42.883, 100.968, 42.749, 42.452, 43.393],
+                        data: [241.818, 43.202, 97.132, 44.16, 43.618, 43.429],
                         backgroundColor: 'rgba(77, 179, 61, 0.8)',
                         borderColor: '#4DB33D',
                         borderWidth: 2,
@@ -2091,7 +2091,7 @@
             data: {
                 labels: ["Select All", "Filter (WHERE)", "JOIN/Lookup", "Aggregation", "Complex JOIN", "Text Search"],
                 datasets: [{
-                    data: [5.728, 0.692, 2.033, 0.6, 0.928, 0.59],
+                    data: [4.534, 0.649, 2.076, 0.53, 1.667, 0.526],
                     backgroundColor: ['rgba(51,103,145,0.9)', 'rgba(51,103,145,0.7)', 'rgba(51,103,145,0.5)', 'rgba(51,103,145,0.3)', 'rgba(74,141,189,0.9)'],
                     borderColor: '#336791',
                     borderWidth: 2
@@ -2106,7 +2106,7 @@
             data: {
                 labels: ["Select All", "Filter (WHERE)", "JOIN/Lookup", "Aggregation", "Complex JOIN", "Text Search"],
                 datasets: [{
-                    data: [184.959, 42.883, 100.968, 42.749, 42.452, 43.393],
+                    data: [241.818, 43.202, 97.132, 44.16, 43.618, 43.429],
                     backgroundColor: ['rgba(77,179,61,0.9)', 'rgba(77,179,61,0.7)', 'rgba(77,179,61,0.5)', 'rgba(77,179,61,0.3)', 'rgba(109,213,93,0.9)'],
                     borderColor: '#4DB33D',
                     borderWidth: 2
